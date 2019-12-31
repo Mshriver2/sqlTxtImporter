@@ -1,7 +1,7 @@
 <?php
 
 //path to txt file, as well as name used for db table
-$file = "./Poloniex.txt";
+$file = "./10.txt";
 
 //used to extract the passwords out of the text file
 function get_passwords($file){
@@ -66,18 +66,19 @@ function creds_db_import($file){
 
     //checks if db to connection failed
     if (!$db) {
-    echo "Error: Unable to connect to MySQL." . PHP_EOL;
-    echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
-    echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
+    echo "Error: Unable to connect to MySQL.";
+    echo "Debugging errno: " . mysqli_connect_errno();
+    echo "Debugging error: " . mysqli_connect_error();
     exit;
     }
 
     //if connection succeeds
-    echo "Success: A proper connection to MySQL was made! The my_db database is great." . PHP_EOL;
-    echo "Host information: " . mysqli_get_host_info($db) . PHP_EOL;
+    echo "Success: A proper connection to MySQL was made!";
 
     //checks if sql table with the name $file exists
-    if ( mysqli_query( "DESCRIBE $newname" ) ) {
+    $exists = mysqli_query($db, "select 1 from $newname");
+
+    if ($exists !== FALSE) {
 
         //if the table exists
         echo "the text file already exists in the db";
