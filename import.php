@@ -1,13 +1,12 @@
 <?php
 
 //path to txt file, as well as name used for db table
-$file = "./10.txt";
+//$file = "./10.txt";
 
 //used to extract the passwords out of the text file
 function get_passwords($file){
-
-
-    $file_contents = file_get_contents($file);
+    $file_path = "./uploads/".$file;
+    $file_contents = file_get_contents($file_path);
 
     //use if seperated by :
     preg_match_all("/(?<=\:).*/", $file_contents, $pass_array);
@@ -15,11 +14,7 @@ function get_passwords($file){
     //use if seperated by ;
     //preg_match_all("/(?<=\;).*/", $file_contents, $pass_array);
 
-
-
     return $pass_array;
-
-
 }
 
 //used to extract the usernames or emails out of the text file
@@ -66,19 +61,18 @@ function creds_db_import($file){
 
     //checks if db to connection failed
     if (!$db) {
-    echo "Error: Unable to connect to MySQL.";
-    echo "Debugging errno: " . mysqli_connect_errno();
-    echo "Debugging error: " . mysqli_connect_error();
+    echo "Error: Unable to connect to MySQL." . PHP_EOL;
+    echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
+    echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
     exit;
     }
 
     //if connection succeeds
-    echo "Success: A proper connection to MySQL was made!";
+    echo "Success: A proper connection to MySQL was made! The my_db database is great." . PHP_EOL;
+    echo "Host information: " . mysqli_get_host_info($db) . PHP_EOL;
 
     //checks if sql table with the name $file exists
-    $exists = mysqli_query($db, "select 1 from $newname");
-
-    if ($exists !== FALSE) {
+    if ( mysqli_query( "DESCRIBE $newname" ) ) {
 
         //if the table exists
         echo "the text file already exists in the db";
@@ -104,7 +98,25 @@ function creds_db_import($file){
 
 }
 
-creds_db_import($file);
+function uploadFile() {
+    if(!empty($_FILES['fileToUpload'])){
+    $path = "./uploads/";
+    $path = $path . basename( $_FILES['fileToUpload']['name']);
+    if(move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $path))
+    {
+      echo "The file ".basename( $_FILES['fileToUpload']['name'])." has been uploaded";
+    } else{
+      echo "There was an error uploading the file, please try again!<br />";
+    }
+  }
+    $uploadedFile = $_FILES['fileToUpload']['name'];
+    return $uploadedFile;
+}
+
+if (isset($_POST['submit'])) {
+    $file = uploadFile();
+    creds_db_import($file);
+}
 
 
  ?>
@@ -117,5 +129,10 @@ creds_db_import($file);
     </head>
     <body>
         <h1>SQL txt data importer</h1>
+        <form method="post" enctype="multipart/form-data">
+            Select file to upload:
+            <input type="file" name="fileToUpload" id="fileToUpload">
+            <input type="submit" value="Upload File" name="submit">
+        </form>
     </body>
 </html>
