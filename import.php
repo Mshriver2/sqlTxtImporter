@@ -14,19 +14,20 @@ function get_passwords($file){
     //use if seperated by ;
     //preg_match_all("/(?<=\;).*/", $file_contents, $pass_array);
 
+    //print_r($pass_array);
     return $pass_array;
 }
 
 //used to extract the usernames or emails out of the text file
 function get_users($file){
 
+    $file_path = "./uploads/".$file;
+    $file_contents = file_get_contents($file_path);
 
-    $file_contents = file_get_contents($file);
-
-    preg_match_all("/^(.*)(?=:)/", $file_contents, $user_array);
-
+    preg_match_all("/(^.*?=:)/", $file_contents, $user_array);
 
     print_r($user_array);
+    return $user_array;
 
 }
 
@@ -36,19 +37,14 @@ function creds_db_import($file){
     get_users($file);
     get_passwords($file);
 
+    $tmp_user_array = get_users($file);
     $tmp_pass_array = get_passwords($file);
-
-    //preg_match("/\w+/",$file,$new_file_name);
-
-    //$new_merged_name = array_merge($new_file_name);
-
-    //echo $new_merged_name;
 
     $step1 = str_replace(".","",$file);
     $newname = str_replace("/","",$step1);
     echo $newname;
 
-    //print_r($tmp_pass_array);
+    //print_r($tmp_user_array);
 
     //counts the number of elements in the password array
     $totalPasswords = array_sum(array_map("count", $tmp_pass_array));
@@ -86,8 +82,9 @@ function creds_db_import($file){
         //runs sql query as many times as the total amount of passwords
         for ($i=0; $i < $totalPasswords; $i++) {
 
+            $tmp_user = $tmp_user_array[0][$i];
             $tmp_pass = $tmp_pass_array[0][$i];
-            $query10 = mysqli_query($db, "INSERT INTO $newname (email_or_user, password) VALUES ('test', '$tmp_pass')");
+            $query10 = mysqli_query($db, "INSERT INTO $newname (email_or_user, password) VALUES ('kek', '$tmp_pass')");
         }
 
         echo "import ran";
