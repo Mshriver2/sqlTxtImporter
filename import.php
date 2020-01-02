@@ -1,5 +1,9 @@
 <?php
 
+// ^([^:]+)
+
+define("BR", "<br>");
+
 //path to txt file, as well as name used for db table
 //$file = "./10.txt";
 
@@ -24,9 +28,9 @@ function get_users($file){
     $file_path = "./uploads/".$file;
     $file_contents = file_get_contents($file_path);
 
-    preg_match_all("/(^.*?=:)/", $file_contents, $user_array);
+    preg_match_all("/^([^:]+)\n/", $file_contents, $user_array);
 
-    print_r($user_array);
+    print_r($user_array).BR;
     return $user_array;
 
 }
@@ -42,36 +46,37 @@ function creds_db_import($file){
 
     $step1 = str_replace(".","",$file);
     $newname = str_replace("/","",$step1);
-    echo $newname;
+    echo $newname.BR;
 
     //print_r($tmp_user_array);
 
     //counts the number of elements in the password array
     $totalPasswords = array_sum(array_map("count", $tmp_pass_array));
-    echo $totalPasswords;
+    echo $totalPasswords.BR;
 
 
     //conects to database
     require_once "db.php";
+
     $db = mysqli_connect($ip,$user,$password,$table);
 
     //checks if db to connection failed
     if (!$db) {
-    echo "Error: Unable to connect to MySQL." . PHP_EOL;
-    echo "Debugging errno: " . mysqli_connect_errno() . PHP_EOL;
-    echo "Debugging error: " . mysqli_connect_error() . PHP_EOL;
+    echo "Error: Unable to connect to MySQL.".BR;
+    echo "Debugging errno: " . mysqli_connect_errno().BR;
+    echo "Debugging error: " . mysqli_connect_error().BR;
     exit;
     }
 
     //if connection succeeds
-    echo "Success: A proper connection to MySQL was made! The my_db database is great." . PHP_EOL;
-    echo "Host information: " . mysqli_get_host_info($db) . PHP_EOL;
+    echo "Success: A proper connection to MySQL was made! The my_db database is great.".BR;
+    echo "Host information: " . mysqli_get_host_info($db).BR;
 
     //checks if sql table with the name $file exists
     if ( mysqli_query( "DESCRIBE $newname" ) ) {
 
         //if the table exists
-        echo "the text file already exists in the db";
+        echo "the text file already exists in the db".BR;
     }else{
 
         //if the table does not exist
@@ -84,10 +89,12 @@ function creds_db_import($file){
 
             $tmp_user = $tmp_user_array[0][$i];
             $tmp_pass = $tmp_pass_array[0][$i];
-            $query10 = mysqli_query($db, "INSERT INTO $newname (email_or_user, password) VALUES ('kek', '$tmp_pass')");
+            $details = $tmp_user." ".$tmp_pass.", ";
+            print_r($details).BR;
+            //$query10 = mysqli_query($db, "INSERT INTO $newname (email_or_user, password) VALUES ('$tmp_user', '$tmp_pass')");
         }
 
-        echo "import ran";
+        echo "import ran".BR;
 
     }
 
@@ -101,9 +108,9 @@ function uploadFile() {
     $path = $path . basename( $_FILES['fileToUpload']['name']);
     if(move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $path))
     {
-      echo "The file ".basename( $_FILES['fileToUpload']['name'])." has been uploaded";
+      echo "The file ".basename( $_FILES['fileToUpload']['name'])." has been uploaded".BR;
     } else{
-      echo "There was an error uploading the file, please try again!<br />";
+      echo "There was an error uploading the file, please try again!<$BR />".BR;
     }
   }
     $uploadedFile = $_FILES['fileToUpload']['name'];
