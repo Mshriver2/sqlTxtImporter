@@ -26,6 +26,7 @@ function get_users($file){
 
     preg_match_all("/(^.*?=:)/", $file_contents, $user_array);
 
+
     print_r($user_array);
     return $user_array;
 
@@ -84,7 +85,7 @@ function creds_db_import($file){
 
             $tmp_user = $tmp_user_array[0][$i];
             $tmp_pass = $tmp_pass_array[0][$i];
-            $query10 = mysqli_query($db, "INSERT INTO $newname (email_or_user, password) VALUES ('kek', '$tmp_pass')");
+            $query10 = mysqli_query($db, "INSERT INTO $newname (email_or_user, password) VALUES ('$tmp_user', '$tmp_pass')");
         }
 
         echo "import ran";
