@@ -49,13 +49,13 @@ function creds_db_import($file){
     //$tmp_pass_array = get_passwords($file);
 
     $file_path = "./uploads/".$file;
-    print_r($file_path);
+    print_r($file_path).BR;
 
     $file_contents = file_get_contents($file_path);
-    print_r($file_contents);
+    print_r($file_contents).BR;
 
-    $file = preg_split("/[:]/", $file_contents);
-    print_r($file);
+    $file = preg_split("/[:]/", $file_contents); 
+    print_r($file).BR;
 
     //$step1 = str_replace(".","",$file);
     //$newname = str_replace("/","",$step1);
@@ -65,7 +65,7 @@ function creds_db_import($file){
     $newname = "array";
     //counts the number of elements in the password array
     $totalPasswords = count($file);
-    echo $totalPasswords." Total Passwords".BR;
+    echo "Total Passwords: ".$totalPasswords.BR;
 
 
     //conects to database
@@ -106,11 +106,11 @@ function creds_db_import($file){
             
             if (($i % 2) == 0) {
                 mysqli_query($db, "INSERT INTO $newname (email_or_user) VALUES ('$file[$i]')");
-                print_r($file[$i]);
+                print_r($file[$i]).BR;
             }
             if (($i % 2) == 1) {
                 mysqli_query($db, "INSERT INTO $newname (password) VALUES ('$file[$i]')");
-                print_r($file[$i]);
+                print_r($file[$i]).BR;
             }
         
         }
