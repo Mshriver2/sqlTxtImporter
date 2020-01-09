@@ -75,9 +75,6 @@ function creds_db_import($file){
         //runs sql query as many times as the total amount of passwords
         for ($i=0; $i < $totalPasswords; $i++) {
 
-            //$tmp_user = $tmp_user_array[0][$i];
-            //$tmp_pass = $tmp_pass_array[0][$i];
-            //print_r($details).BR;
 
             //if (($i % 2) == 0) {
                 $tmp_user = $final_array[$i][0];
