@@ -4,67 +4,42 @@
 
 define("BR", "<br>");
 
-//path to txt file, as well as name used for db table
-//$file = "./10.txt";
-
-//used to extract the passwords out of the text file
-
-
-//function get_passwords($file){
-    //$file_path = "./uploads/".$file;
-    //$file_contents = file_get_contents($file_path);
-
-    //use if seperated by :
-    //preg_match_all("/(?<=\:).*/", $file_contents, $pass_array);
-
-    //use if seperated by ;
-    //preg_match_all("/(?<=\;).*/", $file_contents, $pass_array);
-
-    //print_r($pass_array);
-    //return $pass_array;
-//}
-
-
-//used to extract the usernames or emails out of the text file
-//function get_users($file){
-
-    //$file_path = "./uploads/".$file;
-    //$file_contents = file_get_contents($file_path);
-
-    //preg_replace("/(?<=\:).*/", $file_contents, "", $user_array_pre);
-    //preg_match_all("/(.*?)/", $user_array_pre, $user_array);
-
-    //print_r($user_array).BR;
-    //return $user_array;
-
-//}
 
 //imports the info from the user and pass functions to the database
 function creds_db_import($file){
-
-    //get_users($file);
-    //get_passwords($file);
-
-    //$tmp_user_array = get_users($file);
-    //$tmp_pass_array = get_passwords($file);
 
     $file_path = "./uploads/".$file;
     print_r($file_path);
 
     $file_contents = file_get_contents($file_path);
-    print_r($file_contents);
+    //print_r($file_contents);
 
-    $file = preg_split("/[:]/", $file_contents);
-    print_r($file);
+    $fn = fopen($file_path,"r");
 
-    //$step1 = str_replace(".","",$file);
-    //$newname = str_replace("/","",$step1);
-    //echo $newname.BR;
+    $final_array = array();
+
+    //sets value for preg_split username and passwords
+    $symbol = $_POST['seperator'];
+
+    //goes through each line of the file one at a time
+    while(! feof($fn))  {
+	       $result = fgets($fn);
+           $new = preg_split("/[$symbol]/", $result);
+
+           //adds split value to the array
+	       array_push($final_array, $new);
+          }
+
+    fclose($fn);
+
+    $step1 = str_replace(".","",$file);
+    $newname = str_replace("/","",$step1);
+    echo $newname.BR;
 
     //print_r($tmp_user_array);
-    $newname = "array";
+
     //counts the number of elements in the password array
-    $totalPasswords = count($file);
+    $totalPasswords = count($final_array);
     echo $totalPasswords." Total Passwords".BR;
 
 
@@ -103,16 +78,20 @@ function creds_db_import($file){
             //$tmp_user = $tmp_user_array[0][$i];
             //$tmp_pass = $tmp_pass_array[0][$i];
             //print_r($details).BR;
-            
-            if (($i % 2) == 0) {
-                mysqli_query($db, "INSERT INTO $newname (email_or_user) VALUES ('$file[$i]')");
-                print_r($file[$i]);
-            }
-            if (($i % 2) == 1) {
-                mysqli_query($db, "INSERT INTO $newname (password) VALUES ('$file[$i]')");
-                print_r($file[$i]);
-            }
-        
+
+            //if (($i % 2) == 0) {
+                $tmp_user = $final_array[$i][0];
+                $tmp_pass = $final_array[$i][1];
+
+                mysqli_query($db, "INSERT INTO $newname (email_or_user, password) VALUES ('$tmp_user','$tmp_pass')");
+                //print_r($file[$i]);
+            //}
+
+            //if (($i % 2) == 1) {
+                //mysqli_query($db, "INSERT INTO $newname (email_or_user, password) VALUES ('$file[$i-1]','$file[$i]')");
+                //print_r($file[$i]);
+            //}
+
         }
 
         echo "import ran".BR;
@@ -157,6 +136,7 @@ if (isset($_POST['submit'])) {
         <form method="post" enctype="multipart/form-data">
             Select file to upload:
             <input type="file" name="fileToUpload" id="fileToUpload">
+             <h2>Enter a seperator<h2><input type="text" name="seperator" value="">
             <input type="submit" value="Upload File" name="submit">
         </form>
     </body>
