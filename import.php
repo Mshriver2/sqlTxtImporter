@@ -1,5 +1,6 @@
 <?php
 
+// ^([^:]+)
 
 define("BR", "<br>");
 
@@ -74,9 +75,20 @@ function creds_db_import($file){
         //runs sql query as many times as the total amount of passwords
         for ($i=0; $i < $totalPasswords; $i++) {
 
-            $tmp_user = $tmp_user_array[$i][0];
-            $tmp_pass = $tmp_pass_array[$i][1];
-            $query10 = mysqli_query($db, "INSERT INTO $newname (email_or_user, password) VALUES ('$tmp_user', '$tmp_pass')");
+
+            //if (($i % 2) == 0) {
+                $tmp_user = $final_array[$i][0];
+                $tmp_pass = $final_array[$i][1];
+
+                mysqli_query($db, "INSERT INTO $newname (email_or_user, password) VALUES ('$tmp_user','$tmp_pass')");
+                //print_r($file[$i]);
+            //}
+
+            //if (($i % 2) == 1) {
+                //mysqli_query($db, "INSERT INTO $newname (email_or_user, password) VALUES ('$file[$i-1]','$file[$i]')");
+                //print_r($file[$i]);
+            //}
+
         }
 
         echo "import ran".BR;
