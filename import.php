@@ -1,6 +1,5 @@
 <?php
 
-// ^([^:]+)
 
 define("BR", "<br>");
 
@@ -75,8 +74,8 @@ function creds_db_import($file){
         //runs sql query as many times as the total amount of passwords
         for ($i=0; $i < $totalPasswords; $i++) {
 
-            $tmp_user = $tmp_user_array[0][$i];
-            $tmp_pass = $tmp_pass_array[0][$i];
+            $tmp_user = $tmp_user_array[$i][0];
+            $tmp_pass = $tmp_pass_array[$i][1];
             $query10 = mysqli_query($db, "INSERT INTO $newname (email_or_user, password) VALUES ('$tmp_user', '$tmp_pass')");
         }
 
