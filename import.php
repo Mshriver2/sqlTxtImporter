@@ -9,7 +9,7 @@ define("BR", "<br>");
 function creds_db_import($file){
 
     $file_path = "./uploads/".$file;
-    print_r($file_path);
+    print_r($file_path).BR;
 
     $file_contents = file_get_contents($file_path);
     //print_r($file_contents);
