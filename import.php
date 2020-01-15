@@ -44,7 +44,7 @@ function creds_db_import($file){
 
 
     //conects to database
-    require_once "db.php";
+    require "db.php";
 
     $db = mysqli_connect($ip,$user,$password,$table);
 
@@ -57,7 +57,7 @@ function creds_db_import($file){
     }
 
     //if connection succeeds
-    echo "Success: A proper connection to MySQL was made! The my_db database is great.".BR;
+    echo "Success: A proper connection to MySQL was made!".BR;
     echo "Host information: " . mysqli_get_host_info($db).BR;
 
     //checks if sql table with the name $file exists
@@ -68,55 +68,67 @@ function creds_db_import($file){
     }else{
 
         //if the table does not exist
-        echo "the table does not exist";
+        echo "the table does not exist".BR;
         //creates the sql table
         mysqli_query($db, "CREATE TABLE $newname (email_or_user VARCHAR(255) NOT NULL,password VARCHAR(255) NOT NULL)");
 
         //runs sql query as many times as the total amount of passwords
         for ($i=0; $i < $totalPasswords; $i++) {
 
-
-            //if (($i % 2) == 0) {
                 $tmp_user = $final_array[$i][0];
                 $tmp_pass = $final_array[$i][1];
 
                 mysqli_query($db, "INSERT INTO $newname (email_or_user, password) VALUES ('$tmp_user','$tmp_pass')");
-                //print_r($file[$i]);
-            //}
 
-            //if (($i % 2) == 1) {
-                //mysqli_query($db, "INSERT INTO $newname (email_or_user, password) VALUES ('$file[$i-1]','$file[$i]')");
-                //print_r($file[$i]);
-            //}
 
         }
 
         echo "import ran".BR;
+        mysqli_close($db);
 
     }
-
-
-
 }
 
-function uploadFile() {
-    if(!empty($_FILES['fileToUpload'])){
-    $path = "./uploads/";
-    $path = $path . basename( $_FILES['fileToUpload']['name']);
-    if(move_uploaded_file($_FILES['fileToUpload']['tmp_name'], $path))
-    {
-      echo "The file ".basename( $_FILES['fileToUpload']['name'])." has been uploaded".BR;
-    } else{
-      echo "There was an error uploading the file, please try again!<$BR />".BR;
+
+
+function uploadFile($user_arr) {
+
+    print_r($user_arr);
+
+    $fileCount = count($user_arr['name']);
+
+
+
+    for ($i = 0; $i<$fileCount; $i++){
+
+        if(!empty($_FILES['userfile'])){
+        $path = "./uploads/";
+        $path = $path . basename( $_FILES['userfile']['name'][$i]);
+        if(move_uploaded_file($_FILES['userfile']['tmp_name'][$i], $path))
+        {
+          echo "The file ".basename( $_FILES['userfile']['name'][$i])." has been uploaded".BR;
+
+          $file = $user_arr['name'][$i];
+          creds_db_import($file);
+
+        } else{
+          echo "There was an error uploading the file, please try again!<$BR />".BR;
+        }
+      }
+
     }
-  }
-    $uploadedFile = $_FILES['fileToUpload']['name'];
+
+
+    $uploadedFile = $_FILES['userfile']['name'][$i];
     return $uploadedFile;
 }
 
+
+
 if (isset($_POST['submit'])) {
-    $file = uploadFile();
-    creds_db_import($file);
+    $user_arr = $_FILES['userfile'];
+    $userFile = uploadFile($user_arr);
+
 }
 
 
@@ -132,7 +144,7 @@ if (isset($_POST['submit'])) {
         <h1>SQL txt data importer</h1>
         <form method="post" enctype="multipart/form-data">
             Select file to upload:
-            <input type="file" name="fileToUpload" id="fileToUpload">
+            <input type="file" name="userfile[]" id="fileToUpload" multiple="">
              <h2>Enter a seperator<h2><input type="text" name="seperator" value="">
             <input type="submit" value="Upload File" name="submit">
         </form>
