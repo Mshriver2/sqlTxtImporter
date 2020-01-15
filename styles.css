@@ -1,0 +1,34 @@
+body {
+  background-color: black;
+}
+
+.Site {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+.Site-content {
+  flex: 1;
+}
+
+h1, h2, form {
+  color: red;
+  text-align: center;
+}
+
+.footer {
+  width: 100%;
+  padding: 1.5em;
+  background-color: red;
+  color: black;
+  text-align: center;
+  font-family: "Oswald", sans-serif;
+  font-weight: 500;
+  margin-top: auto;
+}
+.footer p {
+  background-color: inherit;
+}
+
+/*# sourceMappingURL=styles.css.map */

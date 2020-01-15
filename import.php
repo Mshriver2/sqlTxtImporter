@@ -5,6 +5,7 @@
 define("BR", "<br>");
 
 
+
 //imports the info from the user and pass functions to the database
 function creds_db_import($file){
 
@@ -138,15 +139,28 @@ if (isset($_POST['submit'])) {
 <html lang="en" dir="ltr">
     <head>
         <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <link rel="stylesheet" type="text/css" href="styles.css">
         <title>SQLtxt</title>
     </head>
-    <body>
-        <h1>SQL txt data importer</h1>
+    <body class="Site">
+        <div class="Site-content">
+
+
+        <h1>Text to SQL Table Importer</h1>
         <form method="post" enctype="multipart/form-data">
-            Select file to upload:
-            <input type="file" name="userfile[]" id="fileToUpload" multiple="">
+            Select file to upload:<br>
+             <br><input type="file" name="userfile[]" id="fileToUpload" multiple="">
              <h2>Enter a seperator<h2><input type="text" name="seperator" value="">
             <input type="submit" value="Upload File" name="submit">
         </form>
+
+        </div>
+
+        <div class="footer">
+            <p>©2020 Keker, LLC</p>
+        </div>
+
     </body>
 </html>
