@@ -98,7 +98,7 @@ function uploadFile($user_arr) {
 
     $fileCount = count($user_arr['name']);
 
-
+    $progressCount = 1;
 
     for ($i = 0; $i<$fileCount; $i++){
 
@@ -111,6 +111,8 @@ function uploadFile($user_arr) {
 
           $file = $user_arr['name'][$i];
           creds_db_import($file);
+          $progress = $progressCount / $fileCount;
+          $progress++;
 
         } else{
           echo "There was an error uploading the file, please try again!<$BR />".BR;
@@ -153,8 +155,11 @@ if (isset($_POST['submit'])) {
             Select file to upload:<br>
              <br><input type="file" name="userfile[]" id="fileToUpload" multiple="">
              <h2>Enter a seperator<h2><input type="text" name="seperator" value="">
-            <input type="submit" value="Upload File" name="submit">
+             <input type="submit" value="Upload File" name="submit">
+
         </form>
+
+        <h2>Progress: <?php echo $progress;?></h2>
 
         </div>
 
