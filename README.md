@@ -2,9 +2,9 @@
 Imports password text files into sql tables using php.
 
 Example data:
-test01:test11
-test02:test22
-test03:test33
+test01@example.com:test11
+test02@example.com:test22
+test03@example.com:test33
 
 This would put the items on the left into the email column and the items on the right into the password column.
 
