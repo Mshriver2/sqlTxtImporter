@@ -6,7 +6,15 @@ test01@example.com:test11
 test02@example.com:test22
 test03@example.com:test33
 
-This would put the items on the left into the email column and the items on the right into the password column.
+This will create a table with the same name as you're text file. Then it will put the items on the left of you're separator symbol into the email column and the items on the right into the password column.
+
+## Setup
+Rename 'db-template.php' to 'db.php'. After that, insert you're database credentials into the 'db.php' file. You're password text files must be separated by a colon or semicolon.
+
+## Example Screenshots
+[logo]: http://thekeker.com/images/github_images/pic_1_txtsql.JPG "Before - text file"
+
+[logo]: http://thekeker.com/images/github_images/pic_1_txtsql.JPG "After - sql database table"
 
 ## TODO
 
