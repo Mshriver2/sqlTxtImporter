@@ -152,9 +152,9 @@ if (isset($_POST['submit'])) {
 
         <h1>Text to SQL Table Importer</h1>
         <form method="post" enctype="multipart/form-data">
-            Select file to upload:<br>
+            <h2>Select file to upload:</h2>
              <br><input type="file" name="userfile[]" id="fileToUpload" multiple="">
-             <h2>Enter a seperator<h2><input type="text" name="seperator" value="">
+             <h2>Enter a seperator<h2><input type="text" name="seperator" value=""><br>
              <input type="submit" value="Upload File" name="submit">
 
         </form>

@@ -1,5 +1,5 @@
 body {
-    background-color: black;
+    background-image: linear-gradient(red, orange);
 
 
 }
@@ -15,12 +15,27 @@ body {
 }
 
 h1, h2, form{
-    color: red;
+    color: black;
     text-align: center;
 }
 
 progress {
     width: 300px;
+}
+
+
+
+input[type=text] {
+  border: 2px solid black;
+  border-radius: 4px;
+  width: 20%;
+}
+
+input[type=button], input[type=submit], input[type=reset] input[type=file] {
+    background-color: black;
+    border: none;
+    color: white;
+    text-decoration: none;
 }
 
 .footer {
