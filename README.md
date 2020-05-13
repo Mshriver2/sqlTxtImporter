@@ -18,6 +18,7 @@ Rename 'db-template.php' to 'db.php'. After that, insert you're database credent
 
 ## TODO
 
+* use OOP to connect to and manage sql statements
 * ~~fix email / username importation regex~~
 * ~~create file upload box~~
 * ~~create option to choose email / username and password separator symbol~~
