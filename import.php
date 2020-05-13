@@ -9,6 +9,7 @@ define("BR", "<br>");
 //imports the info from the user and pass functions to the database
 function creds_db_import($file){
 
+    // sets the location of the .txt files
     $file_path = "./uploads/".$file;
     print_r($file_path).BR;
 
@@ -33,6 +34,7 @@ function creds_db_import($file){
 
     fclose($fn);
 
+    // removes any dots or slashes from the filename for use as the sql table name
     $step1 = str_replace(".","",$file);
     $newname = str_replace("/","",$step1);
     echo $newname.BR;
